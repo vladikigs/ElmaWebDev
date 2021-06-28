@@ -1,0 +1,80 @@
+.pr-0 {
+  padding-right: 0;
+}
+
+.row {
+  --bs-gutter-x: 0;
+  --bs-gutter-y: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(var(--bs-gutter-y) * -1);
+  margin-right: calc(var(--bs-gutter-x) * -.5);
+  margin-left: calc(var(--bs-gutter-x) * -.5);
+}
+
+.scroll {
+  overflow: scroll;
+  overflow-y: hidden;
+}
+
+.names-table {
+  max-width: 100px;
+  margin-bottom: 17px;
+}
+
+.dropzone.drop {
+  background: gainsboro;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.info:hover .tooltip-span {
+  visibility: visible;
+  transition: 1s;
+}
+
+.info .tooltip-span {
+  visibility: hidden;
+  background-color: black;
+  color: #fff;
+  text-align: left;
+  border-radius: 6px;
+  padding: 15px;
+  position: absolute;
+  z-index: 1;
+}
+
+.info .tooltip-text {
+  margin: 0;
+}
+
+.task {
+  background: white;
+  border-radius: 10px;
+  border-color: white;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+
+.task.completed{
+  background: #08c108b8;
+}
+
+.task.overdue{
+  background: #ff0000ba;
+}
+
+.info:hover .tooltip-span:active {
+  width: 70px;
+  height: 74px;
+}
+
+.info .tooltip-span .dragging {
+  pointer-events: none;
+}
+
+tr {
+  height: 82px;
+}
