@@ -1,6 +1,7 @@
-import {createTable } from './createTable'
+import {createTable } from './create-table'
 import {rootReducer} from './redux/table/table-reducer'
 import {
+  asyncLoadData,
   initApplication,
   nextDates,
   previousDates,
@@ -12,9 +13,9 @@ import {applyTableEvents} from "./redux/table/event-table-manager";
 import {generateBacklog} from "./redux/backgog/generator-backlog";
 import {applyBacklogEvents} from "./redux/backgog/event-backlog-manager";
 
-
 const tableReducer = createTable(
-    rootReducer
+    rootReducer,
+
 )
 
 $( "#nextDates").click(function() {
@@ -32,11 +33,13 @@ $( ".input-group-append").click(function() {
 
 tableReducer.subscribe(() => {
   const state = tableReducer.getState();
-  generateTable(state.table);
-  console.log(state.backlog.filterName);
-  generateBacklog(state.table.tasks, state.backlog.filterName);
-  applyTableEvents(tableReducer);
-  applyBacklogEvents(tableReducer);
+  if (!$.isEmptyObject(state.table.users) && !$.isEmptyObject(state.table.tasks)) {
+    console.log(state)
+    generateTable(state.table);
+    generateBacklog(state.table.tasks, state.backlog.filterName);
+    applyTableEvents(tableReducer);
+    applyBacklogEvents(tableReducer);
+  }
 })
-
 tableReducer.dispatch(initApplication())
+tableReducer.dispatch(asyncLoadData(tableReducer))

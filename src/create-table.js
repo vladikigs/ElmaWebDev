@@ -1,7 +1,7 @@
 import {INIT_APPLICATION} from "./redux/types";
 
 export function createTable(rootReducer, initialState) {
-  let state = rootReducer(initialState, {type: INIT_APPLICATION})
+  let state = rootReducer(initialState, INIT_APPLICATION)
   const subscribers = []
 
   return {

@@ -1,4 +1,4 @@
-import {changeInTable, setFilterBacklogByName} from "../actions";
+import {changeInTable} from "../actions";
 
 export function applyBacklogEvents(table) {
     $('.list-group-item')

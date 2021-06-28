@@ -1,41 +1,25 @@
 import {TASKS_SERVER_URL, USERS_SERVER_URL} from "../types";
+import {loadTasks, loadUsers} from "../actions";
 
-export function loadDataUsers() {
-  let data = $.ajax({
-    async: false,
+export function loadDataUsers(tableReducer) {
+  console.log(`users`)
+  $.ajax({
     dataType: 'json',
     url: USERS_SERVER_URL,
-  });
-  return data.responseJSON.map(item => {
-    return {
-      id: item.id,
-      username: item.username,
-      surname: item.surname,
-      firstName: item.firstName,
-      secondName: item.secondName
+    success: function (users) {
+      console.log(`users`)
+      tableReducer.dispatch(loadUsers(users));
     }
   });
 }
 
-export function loadDataTasks() {
-  let data = $.ajax({
-    async: false,
+export function loadDataTasks(tableReducer) {
+  console.log(`users`)
+  $.ajax({
     dataType: 'json',
     url: TASKS_SERVER_URL,
-  });
-  return data.responseJSON.map(item => {
-    return {
-      id: item.id,
-      subject: item.subject,
-      description: item.description,
-      creationAuthor: item.creationAuthor,
-      executor: item.executor,
-      creationDate: item.creationDate,
-      planStartDate: item.planStartDate,
-      planEndDate: item.planEndDate,
-      endDate: item.endDate,
-      status: item.status,
-      order: item.order
+    success: function (tasks) {
+      tableReducer.dispatch(loadTasks(tasks));
     }
-  })
+  });
 }

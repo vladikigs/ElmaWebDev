@@ -1,7 +1,12 @@
 import {combineReducers} from 'redux'
-
-import {loadDataTasks, loadDataUsers} from "../loader/data-loader";
-import {CHANGE_IN_TABLE, INIT_APPLICATION, NEXT_DATES, PREVIOUS_DATES} from "../types";
+import {
+  CHANGE_IN_TABLE,
+  INIT_APPLICATION,
+  LOAD_TASKS,
+  LOAD_USERS,
+  NEXT_DATES,
+  PREVIOUS_DATES
+} from "../types";
 import {addDaysToDate} from "./date-manager";
 import {editDataForTask} from "./task-manager";
 import {backlogReducer} from "../backgog/backlog-reducer";
@@ -17,10 +22,8 @@ function tableReducer(state = initialTableState, action) {
   let startDateOfTheTable;
   switch (action.type) {
     case INIT_APPLICATION:
-      let users = loadDataUsers();
-      let tasks = loadDataTasks();
       startDateOfTheTable = addDaysToDate(new Date(), -Math.floor(state.numberOfDatesPerPage/2));
-      return {...state, users: users, tasks: tasks, startDateOfTheTable: startDateOfTheTable};
+      return {...state, startDateOfTheTable: startDateOfTheTable};
     case NEXT_DATES:
       startDateOfTheTable = addDaysToDate(state.startDateOfTheTable, state.numberOfDatesPerPage-1);
       return {...state, startDateOfTheTable: startDateOfTheTable};
@@ -35,6 +38,11 @@ function tableReducer(state = initialTableState, action) {
           action.dragContainer.dataset.userId
       );
       return state = {...state, tasks: newTasks};
+    case LOAD_USERS:
+      return state = {...state, users: action.users};
+    case LOAD_TASKS:
+      return state = {...state, tasks: action.tasks};
+
     default:
       return state;
   }

@@ -1,8 +1,7 @@
-import {getFullName} from "./user-manager";
+import {getFullName, getUserById} from "./user-manager";
 import {
     getCreationDate,
     getPlanEndDate,
-    getPlanStartDate,
     getStatus,
     getTheRemainingTimeBeforeTheTaskIsCompleted
 } from "./task-manager";
@@ -13,6 +12,7 @@ let globalTableData;
 export function generateTable(tableData) {
     globalTableData = tableData
     let dateText;
+    console.log(tableData)
     let date = new Date(parseDate(tableData.startDateOfTheTable).toDateString());
     $('#tasks')[0].innerHTML = "";
     $('#dates')[0].innerHTML = '<th class="text-center" scope="col">&nbsp;</th>';
@@ -37,7 +37,7 @@ function showTasksForUser(user, tableData) {
         <th class="align-middle text-center" scope="row">${getFullName(user)}</th>`;
     let date = new Date(parseDate(tableData.startDateOfTheTable).toDateString());
     for (let i = 0; i < tableData.numberOfDatesPerPage; i++) {
-        let tasks = getTaskByStartDateAndUser(date, user, tableData.tasks);
+        let tasks = getTaskByStartDateAndUser(date, user);
         if (tasks.length > 0) {
             $('#user-'+user.id)[0].innerHTML += generateHtmlTasks(tasks, user, date);
         } else {
@@ -47,9 +47,9 @@ function showTasksForUser(user, tableData) {
     }
 }
 
-function getTaskByStartDateAndUser(date, user, tasks) {
+function getTaskByStartDateAndUser(date, user) {
     date = resetDateTime(date);
-    return tasks.filter(function(item){
+    return globalTableData.tasks.filter(function(item){
         return (parseDate(item.planStartDate).getTime() === date.getTime() && item.executor === user.id);
     });
 }
@@ -67,19 +67,14 @@ function generateHtmlTasks(tasks, user, date) {
         <span class="tooltip-span">
           <p class="tooltip-text">Тема: ${tasks[i].subject}</p>
           <p class="tooltip-text">Описание: ${tasks[i].description === ""?"отсутствует":tasks[i].description}</p>
-          <p class="tooltip-text">Автор: ${getFullName(getUserById(tasks[i].creationAuthor))}</p>
+          <p class="tooltip-text">Автор: ${getFullName(getUserById(globalTableData.users, tasks[i].creationAuthor))}</p>
           <p class="tooltip-text">До завершения: ${getTheRemainingTimeBeforeTheTaskIsCompleted(tasks[i])}</p>
           <p class="tooltip-text">Дата создания: ${getCreationDate(tasks[i])}</p>
           <p class="tooltip-text">Дата завершения: ${getPlanEndDate(tasks[i])}</p>
           <p class="tooltip-text">Статус: ${getStatus(tasks[i])}</p>
         </span>
-      </div>
-      `
+      </div>`
     }
     html += `</td>`;
     return html;
-}
-
-function getUserById(userId) {
-    return globalTableData.users.find(value => value.id === userId);
 }

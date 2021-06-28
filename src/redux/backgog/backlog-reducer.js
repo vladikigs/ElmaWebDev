@@ -1,5 +1,4 @@
 import {SET_FILTER_BACKLOG_BY_NAME} from '../types'
-import {setFilterByName} from "./filter-backlog-manager";
 
 const initialTableState = {
     filterName: "",
